@@ -17,6 +17,7 @@ public class DesktopXRSwitchMod : MelonMod
         ApplyPatches(typeof(HarmonyPatches.CVRPickupObjectPatches));
         ApplyPatches(typeof(HarmonyPatches.CVRWorldPatches));
         ApplyPatches(typeof(HarmonyPatches.CameraFacingObjectPatches));
+        ApplyPatches(typeof(HarmonyPatches.IKSystemPatches));
     }
 
     private void ApplyPatches(Type type)

@@ -2,6 +2,7 @@
 using ABI_RC.Core.Player;
 using ABI_RC.Core.Savior;
 using ABI_RC.Core.Util.Object_Behaviour;
+using ABI_RC.Systems.IK;
 using HarmonyLib;
 using NAK.Melons.DesktopXRSwitch.Patches;
 using UnityEngine;
@@ -60,5 +61,15 @@ internal class CameraFacingObjectPatches
     private static void Postfix_CameraFacingObject_Start(ref CameraFacingObject __instance)
     {
         __instance.gameObject.AddComponent<CameraFacingObjectFix>();
+    }
+}
+
+internal class IKSystemPatches
+{
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(IKSystem), "Start")]
+    private static void Postfix_IKSystem_Start(ref IKSystem __instance)
+    {
+        __instance.gameObject.AddComponent<IKSystemFix>();
     }
 }

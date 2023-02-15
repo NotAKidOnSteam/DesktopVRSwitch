@@ -5,19 +5,19 @@ namespace NAK.Melons.DesktopXRSwitch.Patches;
 
 public class VRModeSwitchTracker : MonoBehaviour
 {
-    public static List<VRModeSwitchTracker> allTrackedObjects = new List<VRModeSwitchTracker>();
+    public static List<VRModeSwitchTracker> allTrackedComponents = new List<VRModeSwitchTracker>();
     public static void OnVRModeSwitch()
     {
         Camera activeCamera = PlayerSetup.Instance.GetActiveCamera().GetComponent<Camera>();
-        for (int i = 0; i < allTrackedObjects.Count; i++)
+        for (int i = 0; i < allTrackedComponents.Count; i++)
         {
-            allTrackedObjects[i]?.OnSwitch(activeCamera);
+            allTrackedComponents[i]?.OnSwitch(activeCamera);
         }
     }
 
     void Awake()
     {
-        allTrackedObjects.Add(this);
+        allTrackedComponents.Add(this);
     }
 
     public virtual void OnSwitch(Camera activeCamera)
@@ -26,6 +26,6 @@ public class VRModeSwitchTracker : MonoBehaviour
 
     public virtual void OnDestroy()
     {
-        allTrackedObjects.Remove(this);
+        allTrackedComponents.Remove(this);
     }
 }
