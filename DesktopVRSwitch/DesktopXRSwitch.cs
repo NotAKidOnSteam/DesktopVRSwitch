@@ -2,7 +2,7 @@
 using ABI_RC.Core.Savior;
 using ABI_RC.Systems.IK;
 using ABI_RC.Systems.MovementSystem;
-using NAK.Melons.DesktopVRSwitch.Patches;
+using NAK.Melons.DesktopXRSwitch.Patches;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Management;
@@ -10,7 +10,7 @@ using UnityEngine.XR.Management;
 //toggling cameras refreshes aspect ratio
 //it is likely best to switch the active cameras first before calling StartXR
 
-namespace NAK.Melons.DesktopVRSwitch;
+namespace NAK.Melons.DesktopXRSwitch;
 
 public class DesktopXRSwitch : MonoBehaviour
 {
@@ -21,10 +21,6 @@ public class DesktopXRSwitch : MonoBehaviour
     private bool _switchInProgress = false;
     private Vector3 _initialSwitchPosition;
     private Quaternion _initialSwitchRotation;
-
-    void Start()
-    {
-    }
 
     void Update()
     {
@@ -56,11 +52,11 @@ public class DesktopXRSwitch : MonoBehaviour
         yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
         if (XRGeneralSettings.Instance.Manager.activeLoader == null)
         {
-            DesktopVRSwitchMod.Logger.Error("Initializing XR Failed. Check Editor or Player log for details.");
+            DesktopXRSwitchMod.Logger.Error("Initializing XR Failed. Check Editor or Player log for details.");
         }
         else
         {
-            DesktopVRSwitchMod.Logger.Msg("Starting XR...");
+            DesktopXRSwitchMod.Logger.Msg("Starting XR...");
             XRGeneralSettings.Instance.Manager.StartSubsystems();
             yield return null;
             AfterXRModeSwitch(true);

@@ -8,7 +8,7 @@ using UnityEngine.AzureSky;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace NAK.Melons.DesktopVRSwitch.Patches;
+namespace NAK.Melons.DesktopXRSwitch.Patches;
 
 internal class ReferenceCameraFix
 {
@@ -21,7 +21,7 @@ internal class ReferenceCameraFix
 
     internal static void CopyToInactiveCam(Camera activeCam, Camera inactiveCam)
     {
-        DesktopVRSwitchMod.Logger.Msg("Copying active camera settings & components to inactive camera.");
+        DesktopXRSwitchMod.Logger.Msg("Copying active camera settings & components to inactive camera.");
 
         //steal basic settings
         inactiveCam.farClipPlane = activeCam.farClipPlane;

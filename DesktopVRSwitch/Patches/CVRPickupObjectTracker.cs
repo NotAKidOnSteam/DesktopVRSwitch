@@ -3,11 +3,10 @@ using UnityEngine;
 
 //Thanks Ben! I was scared of transpiler so I reworked a bit...
 
-namespace NAK.Melons.DesktopVRSwitch.Patches;
+namespace NAK.Melons.DesktopXRSwitch.Patches;
 
-public class CVRPickupObjectTracker : MonoBehaviour
+public class CVRPickupObjectTracker : VRModeSwitchTracker
 {
-    public static List<CVRPickupObjectTracker> allTrackedObjects = new List<CVRPickupObjectTracker>();
     public static Dictionary<CVRPickupObject, Transform> storedGripOrigins = new();
 
     public CVRPickupObject pickupObject;
@@ -20,20 +19,7 @@ public class CVRPickupObjectTracker : MonoBehaviour
         }
     }
 
-    public static void OnVRModeSwitch()
-    {
-        for (int i = 0; i < allTrackedObjects.Count; i++)
-        {
-            allTrackedObjects[i].OnSwitch();
-        }
-    }
-
-    private void Awake()
-    {
-        allTrackedObjects.Add(this);
-    }
-
-    public void OnSwitch()
+    public override void OnSwitch(Camera activeCamera)
     {
         if (pickupObject != null)
         {
@@ -42,9 +28,9 @@ public class CVRPickupObjectTracker : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
-        allTrackedObjects.Remove(this);
+        base.OnDestroy();
         if (storedGripOrigins.ContainsKey(pickupObject))
         {
             storedGripOrigins.Remove(pickupObject);

@@ -1,12 +1,12 @@
 ﻿using ABI.CCK.Components;
-using ABI_RC.Core.Base;
 using ABI_RC.Core.Player;
 using ABI_RC.Core.Savior;
+using ABI_RC.Core.Util.Object_Behaviour;
 using HarmonyLib;
-using NAK.Melons.DesktopVRSwitch.Patches;
+using NAK.Melons.DesktopXRSwitch.Patches;
 using UnityEngine;
 
-namespace NAK.Melons.DesktopVRSwitch.HarmonyPatches;
+namespace NAK.Melons.DesktopXRSwitch.HarmonyPatches;
 
 internal class PlayerSetupPatches
 {
@@ -29,7 +29,7 @@ internal class CVRPickupObjectPatches
         Transform desktopOrigin = __instance.gripOrigin.Find("[Desktop]");
         if (vrOrigin != null && desktopOrigin != null)
         {
-            var tracker = __instance.AddComponentIfMissing<CVRPickupObjectTracker>();
+            var tracker = __instance.gameObject.AddComponent<CVRPickupObjectTracker>();
             tracker.pickupObject = __instance;
             CVRPickupObjectTracker.StoreInitialGripOrigin(__instance, (!MetaPort.Instance.isUsingVr) ? vrOrigin : desktopOrigin);
         }
@@ -50,5 +50,15 @@ internal class CVRWorldPatches
     private static void CVRWorld_CopyRefCamValues_Postfix()
     {
         ReferenceCameraFix.OnWorldLoad();
+    }
+}
+
+internal class CameraFacingObjectPatches
+{
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(CameraFacingObject), "Start")]
+    private static void Postfix_CameraFacingObject_Start(ref CameraFacingObject __instance)
+    {
+        __instance.gameObject.AddComponent<CameraFacingObjectFix>();
     }
 }

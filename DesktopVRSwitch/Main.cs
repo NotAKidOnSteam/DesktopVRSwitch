@@ -1,21 +1,22 @@
 ﻿using MelonLoader;
 
-namespace NAK.Melons.DesktopVRSwitch;
+namespace NAK.Melons.DesktopXRSwitch;
 
-public class DesktopVRSwitchMod : MelonMod
+public class DesktopXRSwitchMod : MelonMod
 {
-    internal const string SettingsCategory = "DesktopVRSwitch";
-    internal static MelonPreferences_Category m_categoryDesktopVRSwitch;
+    internal const string SettingsCategory = "DesktopXRSwitch";
+    internal static MelonPreferences_Category m_categoryDesktopXRSwitch;
     internal static MelonLogger.Instance Logger;
 
     public override void OnInitializeMelon()
     {
         Logger = LoggerInstance;
-        m_categoryDesktopVRSwitch = MelonPreferences.CreateCategory(SettingsCategory);
+        m_categoryDesktopXRSwitch = MelonPreferences.CreateCategory(SettingsCategory);
 
         ApplyPatches(typeof(HarmonyPatches.PlayerSetupPatches));
         ApplyPatches(typeof(HarmonyPatches.CVRPickupObjectPatches));
         ApplyPatches(typeof(HarmonyPatches.CVRWorldPatches));
+        ApplyPatches(typeof(HarmonyPatches.CameraFacingObjectPatches));
     }
 
     private void ApplyPatches(Type type)

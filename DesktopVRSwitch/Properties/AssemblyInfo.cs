@@ -1,20 +1,20 @@
 ﻿using MelonLoader;
-using NAK.Melons.DesktopVRSwitch.Properties;
+using NAK.Melons.DesktopXRSwitch.Properties;
 using System.Reflection;
 
 [assembly: AssemblyVersion(AssemblyInfoParams.Version)]
 [assembly: AssemblyFileVersion(AssemblyInfoParams.Version)]
 [assembly: AssemblyInformationalVersion(AssemblyInfoParams.Version)]
-[assembly: AssemblyTitle(nameof(NAK.Melons.DesktopVRSwitch))]
+[assembly: AssemblyTitle(nameof(NAK.Melons.DesktopXRSwitch))]
 [assembly: AssemblyCompany(AssemblyInfoParams.Author)]
-[assembly: AssemblyProduct(nameof(NAK.Melons.DesktopVRSwitch))]
+[assembly: AssemblyProduct(nameof(NAK.Melons.DesktopXRSwitch))]
 
 [assembly: MelonInfo(
-    typeof(NAK.Melons.DesktopVRSwitch.DesktopVRSwitchMod),
-    nameof(NAK.Melons.DesktopVRSwitch),
+    typeof(NAK.Melons.DesktopXRSwitch.DesktopXRSwitchMod),
+    nameof(NAK.Melons.DesktopXRSwitch),
     AssemblyInfoParams.Version,
     AssemblyInfoParams.Author,
-    downloadLink: "https://github.com/NotAKidOnSteam/DesktopVRSwitch"
+    downloadLink: "https://github.com/NotAKidOnSteam/DesktopXRSwitch"
 )]
 
 [assembly: MelonGame("Alpha Blend Interactive", "ChilloutVR")]
@@ -22,7 +22,7 @@ using System.Reflection;
 [assembly: MelonPlatformDomain(MelonPlatformDomainAttribute.CompatibleDomains.MONO)]
 [assembly: HarmonyDontPatchAll]
 
-namespace NAK.Melons.DesktopVRSwitch.Properties;
+namespace NAK.Melons.DesktopXRSwitch.Properties;
 internal static class AssemblyInfoParams
 {
     public const string Version = "4.2.1";

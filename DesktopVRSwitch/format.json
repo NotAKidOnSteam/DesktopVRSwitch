@@ -1,6 +1,6 @@
 {
   "_id": 103,
-  "name": "DesktopVRSwitch",
+  "name": "DesktopXRSwitch",
   "modversion": "3.0.0",
   "gameversion": "2022r169p1",
   "loaderversion": "0.5.7",
@@ -16,8 +16,8 @@
   "requirements": [
     "None"
   ],
-  "downloadlink": "https://github.com/NotAKidOnSteam/DesktopVRSwitch/releases/download/r3/DesktopVRSwitch.dll",
-  "sourcelink": "https://github.com/NotAKidOnSteam/DesktopVRSwitch/",
+  "downloadlink": "https://github.com/NotAKidOnSteam/DesktopXRSwitch/releases/download/r3/DesktopXRSwitch.dll",
+  "sourcelink": "https://github.com/NotAKidOnSteam/DesktopXRSwitch/",
   "changelog": "Initial CVRMG Release",
   "embedcolor": "3498db"
 }
