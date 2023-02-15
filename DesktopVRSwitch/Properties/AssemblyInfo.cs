@@ -1,5 +1,5 @@
-﻿using NAK.Melons.DesktopVRSwitch.Properties;
-using MelonLoader;
+﻿using MelonLoader;
+using NAK.Melons.DesktopVRSwitch.Properties;
 using System.Reflection;
 
 [assembly: AssemblyVersion(AssemblyInfoParams.Version)]
@@ -25,6 +25,6 @@ using System.Reflection;
 namespace NAK.Melons.DesktopVRSwitch.Properties;
 internal static class AssemblyInfoParams
 {
-    public const string Version = "4.0.0";
+    public const string Version = "4.2.1";
     public const string Author = "NotAKidoS";
 }

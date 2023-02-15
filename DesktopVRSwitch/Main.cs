@@ -1,5 +1,4 @@
-﻿using ABI_RC.Core.Player;
-using MelonLoader;
+﻿using MelonLoader;
 
 namespace NAK.Melons.DesktopVRSwitch;
 
@@ -15,6 +14,8 @@ public class DesktopVRSwitchMod : MelonMod
         m_categoryDesktopVRSwitch = MelonPreferences.CreateCategory(SettingsCategory);
 
         ApplyPatches(typeof(HarmonyPatches.PlayerSetupPatches));
+        ApplyPatches(typeof(HarmonyPatches.CVRPickupObjectPatches));
+        ApplyPatches(typeof(HarmonyPatches.CVRWorldPatches));
     }
 
     private void ApplyPatches(Type type)
