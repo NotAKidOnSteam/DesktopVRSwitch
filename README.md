@@ -1,4 +1,4 @@
-# DesktopVRSwitch
+# DesktopXRSwitch
 Allows you to switch between Desktop and VR with a keybind.
 
 Press Control + F6 to switch.
