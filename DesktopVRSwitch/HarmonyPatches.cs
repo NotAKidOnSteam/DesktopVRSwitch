@@ -24,6 +24,7 @@ internal class CVRPickupObjectPatches
     [HarmonyPatch(typeof(CVRPickupObject), "Start")]
     private static void Prefix_CVRPickupObject_Start(ref CVRPickupObject __instance)
     {
+        if (__instance.gripType == CVRPickupObject.GripType.Free) return;
         Transform vrOrigin = __instance.gripOrigin;
         Transform desktopOrigin = __instance.gripOrigin.Find("[Desktop]");
         if (vrOrigin != null && desktopOrigin != null)
