@@ -3,6 +3,7 @@ using ABI_RC.Core.Player;
 using ABI_RC.Core.Savior;
 using ABI_RC.Core.Util.Object_Behaviour;
 using ABI_RC.Systems.IK;
+using ABI_RC.Systems.MovementSystem;
 using HarmonyLib;
 using NAK.Melons.DesktopXRSwitch.Patches;
 using UnityEngine;
@@ -19,6 +20,16 @@ internal class PlayerSetupPatches
     }
 }
 
+internal class MovementSystemPatches
+{
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(MovementSystem), "Start")]
+    private static void Postfix_MovementSystem_Start(ref MovementSystem __instance)
+    {
+        __instance.gameObject.AddComponent<MovementSystemTracker>();
+    }
+}
+
 internal class CVRPickupObjectPatches
 {
     [HarmonyPrefix]
@@ -32,7 +43,7 @@ internal class CVRPickupObjectPatches
         {
             var tracker = __instance.gameObject.AddComponent<CVRPickupObjectTracker>();
             tracker.pickupObject = __instance;
-            CVRPickupObjectTracker.StoreInitialGripOrigin(__instance, (!MetaPort.Instance.isUsingVr) ? vrOrigin : desktopOrigin);
+            tracker.storedGripOrigin = (!MetaPort.Instance.isUsingVr ? vrOrigin : desktopOrigin);
         }
     }
 }
@@ -43,14 +54,14 @@ internal class CVRWorldPatches
     [HarmonyPatch(typeof(CVRWorld), "SetDefaultCamValues")]
     private static void CVRWorld_SetDefaultCamValues_Postfix()
     {
-        ReferenceCameraFix.OnWorldLoad();
+        ReferenceCameraPatch.OnWorldLoad();
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(CVRWorld), "CopyRefCamValues")]
     private static void CVRWorld_CopyRefCamValues_Postfix()
     {
-        ReferenceCameraFix.OnWorldLoad();
+        ReferenceCameraPatch.OnWorldLoad();
     }
 }
 
@@ -60,7 +71,7 @@ internal class CameraFacingObjectPatches
     [HarmonyPatch(typeof(CameraFacingObject), "Start")]
     private static void Postfix_CameraFacingObject_Start(ref CameraFacingObject __instance)
     {
-        __instance.gameObject.AddComponent<CameraFacingObjectFix>();
+        __instance.gameObject.AddComponent<CameraFacingObjectTracker>();
     }
 }
 
@@ -70,6 +81,6 @@ internal class IKSystemPatches
     [HarmonyPatch(typeof(IKSystem), "Start")]
     private static void Postfix_IKSystem_Start(ref IKSystem __instance)
     {
-        __instance.gameObject.AddComponent<IKSystemFix>();
+        __instance.gameObject.AddComponent<IKSystemTracker>();
     }
 }

@@ -3,15 +3,21 @@ using UnityEngine;
 
 namespace NAK.Melons.DesktopXRSwitch.Patches;
 
-public class CameraFacingObjectFix : VRModeSwitchTracker
+public class CameraFacingObjectTracker : MonoBehaviour
 {
     public CameraFacingObject cameraFacingObject;
     void Start()
     {
         cameraFacingObject = GetComponent<CameraFacingObject>();
+        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
     }
 
-    public override void PostVRModeSwitch(Camera activeCamera)
+    void OnDestroy()
+    {
+        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
+    }
+
+    public void PostVRModeSwitch(bool enterXR, Camera activeCamera)
     {
         cameraFacingObject.m_Camera = activeCamera;
     }

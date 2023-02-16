@@ -7,12 +7,13 @@ using ABI_RC.Core.UI;
 using ABI_RC.Systems.Camera;
 using HarmonyLib;
 using UnityEngine;
+using NAK.Melons.DesktopXRSwitch.Patches;
 
 namespace NAK.Melons.DesktopXRSwitch;
 
 internal class TryCatchHell
 {
-    private static void TryCatchWrapper(Action action, string errorMsg, params object[] msgArgs)
+    internal static void TryCatchWrapper(Action action, string errorMsg, params object[] msgArgs)
     {
         try
         {
@@ -153,7 +154,6 @@ internal class TryCatchHell
         },
         "Failed to update Discord & Steam Rich Presence.");
     }
-
 
     internal static void UpdateGestureReconizerCam()
     {

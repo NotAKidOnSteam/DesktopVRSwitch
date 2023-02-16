@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace NAK.Melons.DesktopXRSwitch.Patches;
 
-public class IKSystemFix : VRModeSwitchTracker
+public class IKSystemTracker : MonoBehaviour
 {
     public IKSystem ikSystem;
     public Traverse _traverseModules;
@@ -15,9 +15,14 @@ public class IKSystemFix : VRModeSwitchTracker
     {
         ikSystem = GetComponent<IKSystem>();
         _traverseModules = Traverse.Create(ikSystem).Field("_trackingModules");
+        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
+    }
+    void OnDestroy()
+    {
+        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
     }
 
-    public override void PostVRModeSwitch(Camera activeCamera)
+    public void PostVRModeSwitch(bool enterXR, Camera activeCamera)
     {
         var _trackingModules = _traverseModules.GetValue<List<TrackingModule>>();
         OpenXRTrackingModule openXRTrackingModule = _trackingModules.FirstOrDefault(m => m is OpenXRTrackingModule) as OpenXRTrackingModule;

@@ -5,35 +5,27 @@ using UnityEngine;
 
 namespace NAK.Melons.DesktopXRSwitch.Patches;
 
-public class CVRPickupObjectTracker : VRModeSwitchTracker
+public class CVRPickupObjectTracker : MonoBehaviour
 {
-    public static Dictionary<CVRPickupObject, Transform> storedGripOrigins = new();
-
     public CVRPickupObject pickupObject;
+    public Transform storedGripOrigin;
 
-    public static void StoreInitialGripOrigin(CVRPickupObject pickupObject, Transform otherOrigin)
+    void Start()
     {
-        if (!storedGripOrigins.ContainsKey(pickupObject))
-        {
-            storedGripOrigins.Add(pickupObject, otherOrigin);
-        }
+        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
     }
 
-    public override void PostVRModeSwitch(Camera activeCamera)
+    void OnDestroy()
+    {
+        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
+    }
+
+    public void PostVRModeSwitch(bool enterXR, Camera activeCamera)
     {
         if (pickupObject != null)
         {
             if (pickupObject._controllerRay != null) pickupObject._controllerRay.DropObject(true);
-            (storedGripOrigins[pickupObject], pickupObject.gripOrigin) = (pickupObject.gripOrigin, storedGripOrigins[pickupObject]);
-        }
-    }
-
-    public override void OnDestroy()
-    {
-        base.OnDestroy();
-        if (storedGripOrigins.ContainsKey(pickupObject))
-        {
-            storedGripOrigins.Remove(pickupObject);
+            (storedGripOrigin, pickupObject.gripOrigin) = (pickupObject.gripOrigin, storedGripOrigin);
         }
     }
 }

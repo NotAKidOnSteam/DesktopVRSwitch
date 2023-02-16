@@ -1,31 +1,33 @@
 ﻿using ABI_RC.Core.Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace NAK.Melons.DesktopXRSwitch.Patches;
 
-public class VRModeSwitchTracker : MonoBehaviour
+public class VRModeSwitchTracker
 {
-    public static List<VRModeSwitchTracker> allTrackedComponents = new List<VRModeSwitchTracker>();
-    public static void PostVRModeSwitch()
+    public static event UnityAction<bool, Camera> OnPreVRModeSwitch;
+    public static event UnityAction<bool, Camera> OnPostVRModeSwitch;
+
+    public static void PreVRModeSwitch(bool enterXR)
     {
-        Camera activeCamera = PlayerSetup.Instance.GetActiveCamera().GetComponent<Camera>();
-        for (int i = 0; i < allTrackedComponents.Count; i++)
+        TryCatchHell.TryCatchWrapper(() =>
         {
-            allTrackedComponents[i]?.PostVRModeSwitch(activeCamera);
-        }
+            DesktopXRSwitchMod.Logger.Msg("Invoking VRModeSwitchTracker.OnPreVRModeSwitch.");
+            Camera activeCamera = PlayerSetup.Instance.GetActiveCamera().GetComponent<Camera>();
+            VRModeSwitchTracker.OnPreVRModeSwitch?.Invoke(enterXR, activeCamera);
+        },
+        "Error while invoking VRModeSwitchTracker.OnPreVRModeSwitch. Did someone do a fucky?");
     }
 
-    void Awake()
+    public static void PostVRModeSwitch(bool enterXR)
     {
-        allTrackedComponents.Add(this);
-    }
-
-    public virtual void PostVRModeSwitch(Camera activeCamera)
-    {
-    }
-
-    public virtual void OnDestroy()
-    {
-        allTrackedComponents.Remove(this);
+        TryCatchHell.TryCatchWrapper(() =>
+        {
+            DesktopXRSwitchMod.Logger.Msg("Invoking VRModeSwitchTracker.OnPostVRModeSwitch.");
+            Camera activeCamera = PlayerSetup.Instance.GetActiveCamera().GetComponent<Camera>();
+            VRModeSwitchTracker.OnPostVRModeSwitch?.Invoke(enterXR, activeCamera);
+        },
+        "Error while invoking VRModeSwitchTracker.OnPostVRModeSwitch. Did someone do a fucky?");
     }
 }

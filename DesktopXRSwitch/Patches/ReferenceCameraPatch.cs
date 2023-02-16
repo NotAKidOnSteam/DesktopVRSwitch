@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace NAK.Melons.DesktopXRSwitch.Patches;
 
-internal class ReferenceCameraFix
+internal class ReferenceCameraPatch
 {
     internal static void OnWorldLoad()
     {

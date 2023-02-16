@@ -1,8 +1,4 @@
-﻿using ABI_RC.Core.Player;
-using ABI_RC.Core.Savior;
-using ABI_RC.Systems.IK;
-using ABI_RC.Systems.MovementSystem;
-using NAK.Melons.DesktopXRSwitch.Patches;
+﻿using NAK.Melons.DesktopXRSwitch.Patches;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Management;
@@ -16,8 +12,6 @@ public class DesktopXRSwitch : MonoBehaviour
 
     //Internal Stuff
     private bool _switchInProgress = false;
-    private Vector3 _initialSwitchPosition;
-    private Quaternion _initialSwitchRotation;
 
     void Update()
     {
@@ -40,7 +34,7 @@ public class DesktopXRSwitch : MonoBehaviour
         }
     }
 
-    public bool IsInXR() => CheckVR.Instance.hasVrDeviceLoaded;
+    public bool IsInXR() => XRGeneralSettings.Instance.Manager.activeLoader != null;
 
     private IEnumerator StartXRSystem()
     {
@@ -78,15 +72,18 @@ public class DesktopXRSwitch : MonoBehaviour
     //one frame before switch attempt
     public void BeforeXRModeSwitch(bool enterXR)
     {
-        _initialSwitchPosition = PlayerSetup.Instance._avatar.transform.position;
-        _initialSwitchRotation = PlayerSetup.Instance._avatar.transform.rotation;
+        //let tracked objects know we are attempting to switch
+        VRModeSwitchTracker.PreVRModeSwitch(enterXR);
     }
 
     //one frame after switch attempt
     public void AfterXRModeSwitch(bool enterXR)
     {
+        //these two must come first
         TryCatchHell.SetCheckVR(enterXR);
         TryCatchHell.SetMetaPort(enterXR);
+
+        //the bulk of funni changes
         TryCatchHell.RepositionCohtmlHud(enterXR);
         TryCatchHell.UpdateHudOperations(enterXR);
         TryCatchHell.DisableMirrorCanvas();
@@ -95,13 +92,8 @@ public class DesktopXRSwitch : MonoBehaviour
         TryCatchHell.UpdateRichPresence();
         TryCatchHell.UpdateGestureReconizerCam();
 
-        //custom patch script to swap pickup grips
-        VRModeSwitchTracker.PostVRModeSwitch();
-
-        //lazy way of correcting Desktop & VR offset issue
-        MovementSystem.Instance.TeleportToPosRot(_initialSwitchPosition, _initialSwitchRotation, false);
-        if (!enterXR) MovementSystem.Instance.UpdateColliderCenter(MovementSystem.Instance.transform.position);
-        IKSystem.Instance.ResetIK();
+        //let tracked objects know we switched
+        VRModeSwitchTracker.PostVRModeSwitch(enterXR);
 
         //reload avatar by default, optional for debugging
         if (_reloadLocalAvatar)
