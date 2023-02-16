@@ -7,7 +7,6 @@ using ABI_RC.Core.UI;
 using ABI_RC.Systems.Camera;
 using HarmonyLib;
 using UnityEngine;
-using NAK.Melons.DesktopXRSwitch.Patches;
 
 namespace NAK.Melons.DesktopXRSwitch;
 
