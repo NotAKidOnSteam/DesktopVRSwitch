@@ -17,7 +17,7 @@ public class IKSystemFix : VRModeSwitchTracker
         _traverseModules = Traverse.Create(ikSystem).Field("_trackingModules");
     }
 
-    public override void OnSwitch(Camera activeCamera)
+    public override void PostVRModeSwitch(Camera activeCamera)
     {
         var _trackingModules = _traverseModules.GetValue<List<TrackingModule>>();
         OpenXRTrackingModule openXRTrackingModule = _trackingModules.FirstOrDefault(m => m is OpenXRTrackingModule) as OpenXRTrackingModule;

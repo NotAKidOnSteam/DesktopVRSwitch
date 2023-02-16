@@ -11,7 +11,7 @@ public class CameraFacingObjectFix : VRModeSwitchTracker
         cameraFacingObject = GetComponent<CameraFacingObject>();
     }
 
-    public override void OnSwitch(Camera activeCamera)
+    public override void PostVRModeSwitch(Camera activeCamera)
     {
         cameraFacingObject.m_Camera = activeCamera;
     }

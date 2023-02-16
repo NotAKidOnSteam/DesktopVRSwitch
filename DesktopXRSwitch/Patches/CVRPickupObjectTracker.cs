@@ -19,7 +19,7 @@ public class CVRPickupObjectTracker : VRModeSwitchTracker
         }
     }
 
-    public override void OnSwitch(Camera activeCamera)
+    public override void PostVRModeSwitch(Camera activeCamera)
     {
         if (pickupObject != null)
         {

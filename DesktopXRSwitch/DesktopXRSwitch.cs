@@ -7,9 +7,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Management;
 
-//toggling cameras refreshes aspect ratio
-//it is likely best to switch the active cameras first before calling StartXR
-
 namespace NAK.Melons.DesktopXRSwitch;
 
 public class DesktopXRSwitch : MonoBehaviour
@@ -66,7 +63,7 @@ public class DesktopXRSwitch : MonoBehaviour
 
     private IEnumerator StopXR()
     {
-        BeforeXRModeSwitch(true);
+        BeforeXRModeSwitch(false);
         yield return null;
         if (XRGeneralSettings.Instance.Manager.isInitializationComplete)
         {
@@ -78,12 +75,14 @@ public class DesktopXRSwitch : MonoBehaviour
         yield break;
     }
 
+    //one frame before switch attempt
     public void BeforeXRModeSwitch(bool enterXR)
     {
         _initialSwitchPosition = PlayerSetup.Instance._avatar.transform.position;
         _initialSwitchRotation = PlayerSetup.Instance._avatar.transform.rotation;
     }
 
+    //one frame after switch attempt
     public void AfterXRModeSwitch(bool enterXR)
     {
         TryCatchHell.SetCheckVR(enterXR);
@@ -97,7 +96,7 @@ public class DesktopXRSwitch : MonoBehaviour
         TryCatchHell.UpdateGestureReconizerCam();
 
         //custom patch script to swap pickup grips
-        CVRPickupObjectTracker.OnVRModeSwitch();
+        VRModeSwitchTracker.PostVRModeSwitch();
 
         //lazy way of correcting Desktop & VR offset issue
         MovementSystem.Instance.TeleportToPosRot(_initialSwitchPosition, _initialSwitchRotation, false);
