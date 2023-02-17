@@ -14,9 +14,15 @@ internal class PlayerSetupPatches
 {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(PlayerSetup), "Start")]
-    private static void Postfix_PlayerSetup_Start()
+    private static void Postfix_PlayerSetup_Start(ref PlayerSetup __instance)
     {
-        CheckVR.Instance.gameObject.AddComponent<DesktopXRSwitch>();
+        if (CheckVR.Instance != null)
+        {
+            CheckVR.Instance.gameObject.AddComponent<DesktopXRSwitch>();
+            return;
+        }
+        __instance.gameObject.AddComponent<DesktopXRSwitch>();
+        DesktopXRSwitchMod.Logger.Error("CheckVR not found. Reverting to fallback method. This should never happen!");
     }
 }
 

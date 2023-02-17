@@ -43,7 +43,7 @@ public class DesktopXRSwitch : MonoBehaviour
         yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
         if (XRGeneralSettings.Instance.Manager.activeLoader == null)
         {
-            DesktopXRSwitchMod.Logger.Error("Initializing XR Failed. Check Editor or Player log for details.");
+            DesktopXRSwitchMod.Logger.Error("Initializing XR Failed. Is there no XR device connected?");
         }
         else
         {
