@@ -18,11 +18,11 @@ internal class PlayerSetupPatches
     {
         if (CheckVR.Instance != null)
         {
-            CheckVR.Instance.gameObject.AddComponent<DesktopXRSwitch>();
+            CheckVR.Instance.gameObject.AddComponent<DesktopVRSwitch>();
             return;
         }
-        __instance.gameObject.AddComponent<DesktopXRSwitch>();
-        DesktopXRSwitchMod.Logger.Error("CheckVR not found. Reverting to fallback method. This should never happen!");
+        __instance.gameObject.AddComponent<DesktopVRSwitch>();
+        DesktopVRSwitchMod.Logger.Error("CheckVR not found. Reverting to fallback method. This should never happen!");
     }
 }
 
@@ -88,5 +88,15 @@ internal class IKSystemPatches
     private static void Postfix_IKSystem_Start(ref IKSystem __instance)
     {
         __instance.gameObject.AddComponent<IKSystemTracker>();
+    }
+}
+
+internal class VRTrackerManagerPatches
+{
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(VRTrackerManager), "Start")]
+    private static void Postfix_VRTrackerManager_Start(ref VRTrackerManager __instance)
+    {
+        __instance.gameObject.AddComponent<VRTrackerManagerTracker>();
     }
 }

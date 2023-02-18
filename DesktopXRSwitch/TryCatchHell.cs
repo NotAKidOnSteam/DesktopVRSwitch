@@ -25,45 +25,56 @@ internal class TryCatchHell
         }
     }
 
-    internal static void SetCheckVR(bool isVR)
+    internal static void CloseCohtmlMenus()
     {
         TryCatchWrapper(() =>
         {
-            DesktopXRSwitchMod.Logger.Msg($"Setting CheckVR hasVrDeviceLoaded to {isVR}.");
-            CheckVR.Instance.hasVrDeviceLoaded = isVR;
+            DesktopXRSwitchMod.Logger.Msg("Closing ViewManager & CVR_MenuManager menus.");
+            ViewManager.Instance.UiStateToggle(false);
+            CVR_MenuManager.Instance.ToggleQuickMenu(false);
         },
         "Setting CheckVR hasVrDeviceLoaded failed.");
     }
 
-    internal static void SetMetaPort(bool isVR)
+    internal static void SetCheckVR(bool isXR)
     {
         TryCatchWrapper(() =>
         {
-            DesktopXRSwitchMod.Logger.Msg($"Setting MetaPort isUsingVr to {isVR}.");
-            MetaPort.Instance.isUsingVr = isVR;
+            DesktopXRSwitchMod.Logger.Msg($"Setting CheckVR hasVrDeviceLoaded to {isXR}.");
+            CheckVR.Instance.hasVrDeviceLoaded = isXR;
+        },
+        "Setting CheckVR hasVrDeviceLoaded failed.");
+    }
+
+    internal static void SetMetaPort(bool isXR)
+    {
+        TryCatchWrapper(() =>
+        {
+            DesktopXRSwitchMod.Logger.Msg($"Setting MetaPort isUsingVr to {isXR}.");
+            MetaPort.Instance.isUsingVr = isXR;
         },
         "Setting MetaPort isUsingVr failed.");
     }
 
-    internal static void RepositionCohtmlHud(bool isVR)
+    internal static void RepositionCohtmlHud(bool isXR)
     {
         TryCatchWrapper(() =>
         {
             DesktopXRSwitchMod.Logger.Msg("Configuring new hud affinity for CohtmlHud.");
-            CohtmlHud.Instance.gameObject.transform.parent = isVR ? PlayerSetup.Instance.vrCamera.transform : PlayerSetup.Instance.desktopCamera.transform;
+            CohtmlHud.Instance.gameObject.transform.parent = isXR ? PlayerSetup.Instance.vrCamera.transform : PlayerSetup.Instance.desktopCamera.transform;
             CVRTools.ConfigureHudAffinity();
             CohtmlHud.Instance.gameObject.transform.localScale = new Vector3(1.2f, 1f, 1.2f);
         },
         "Error parenting CohtmlHud to active camera.");
     }
 
-    internal static void UpdateHudOperations(bool isVR)
+    internal static void UpdateHudOperations(bool isXR)
     {
         TryCatchWrapper(() =>
         {
             DesktopXRSwitchMod.Logger.Msg("Switching HudOperations worldLoadingItem & worldLoadStatus.");
-            HudOperations.Instance.worldLoadingItem = isVR ? HudOperations.Instance.worldLoadingItemVr : HudOperations.Instance.worldLoadingItemDesktop;
-            HudOperations.Instance.worldLoadStatus = isVR ? HudOperations.Instance.worldLoadStatusVr : HudOperations.Instance.worldLoadStatusDesktop;
+            HudOperations.Instance.worldLoadingItem = isXR ? HudOperations.Instance.worldLoadingItemVr : HudOperations.Instance.worldLoadingItemDesktop;
+            HudOperations.Instance.worldLoadStatus = isXR ? HudOperations.Instance.worldLoadStatusVr : HudOperations.Instance.worldLoadStatusDesktop;
         },
         "Failed switching HudOperations objects.");
     }
@@ -80,13 +91,13 @@ internal class TryCatchHell
         "Failed to disable PortableCamera canvas mirroring.");
     }
 
-    internal static void SwitchActiveCameraRigs(bool isVR)
+    internal static void SwitchActiveCameraRigs(bool isXR)
     {
         TryCatchWrapper(() =>
         {
             DesktopXRSwitchMod.Logger.Msg("Switching active PlayerSetup camera rigs. Updating Desktop camera FOV.");
-            PlayerSetup.Instance.desktopCameraRig.SetActive(!isVR);
-            PlayerSetup.Instance.vrCameraRig.SetActive(isVR);
+            PlayerSetup.Instance.desktopCameraRig.SetActive(!isXR);
+            PlayerSetup.Instance.vrCameraRig.SetActive(isXR);
             CVR_DesktopCameraController.UpdateFov();
             //uicamera has script that copies fov from desktop cam
             //toggling the cameras on/off resets aspect ratio
@@ -120,6 +131,8 @@ internal class TryCatchHell
             CVRInputManager.Instance.gestureLeftRaw = 0f;
             CVRInputManager.Instance.gestureRight = 0f;
             CVRInputManager.Instance.gestureRightRaw = 0f;
+            //turn off finger tracking input
+            CVRInputManager.Instance.individualFingerTracking = false;
         },
         "Failed to reset CVRInputManager inputs.");
     }
@@ -164,4 +177,3 @@ internal class TryCatchHell
         "Failed to update CVRGestureRecognizer camera.");
     }
 }
-

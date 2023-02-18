@@ -1,7 +1,7 @@
 ﻿using NAK.Melons.DesktopXRSwitch.Patches;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.XR.Management;
+using Valve.VR;
 
 namespace NAK.Melons.DesktopXRSwitch;
 
@@ -12,6 +12,12 @@ public class DesktopXRSwitch : MonoBehaviour
 
     //Internal Stuff
     private bool _switchInProgress = false;
+
+    void Start()
+    {
+        //do not pause game, this breaks dynbones & trackers
+        SteamVR_Settings.instance.pauseGameWhenDashboardVisible = false;
+    }
 
     void Update()
     {
@@ -38,62 +44,74 @@ public class DesktopXRSwitch : MonoBehaviour
 
     private IEnumerator StartXRSystem()
     {
-        BeforeXRModeSwitch(true);
+        PreVRModeSwitch(true);
         yield return null;
         yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
-        if (XRGeneralSettings.Instance.Manager.activeLoader == null)
+        if (!XRGeneralSettings.Instance.Manager.activeLoader == null)
         {
-            DesktopXRSwitchMod.Logger.Error("Initializing XR Failed. Is there no XR device connected?");
-        }
-        else
-        {
-            DesktopXRSwitchMod.Logger.Msg("Starting XR...");
+            DesktopXRSwitchMod.Logger.Msg("Starting OpenXR...");
             XRGeneralSettings.Instance.Manager.StartSubsystems();
             yield return null;
-            AfterXRModeSwitch(true);
+            PostVRModeSwitch(true);
+            yield break;
         }
+        DesktopXRSwitchMod.Logger.Error("Initializing XR Failed. Is there no XR device connected?");
+        FailedVRModeSwitch(true);
         yield break;
     }
 
     private IEnumerator StopXR()
     {
-        BeforeXRModeSwitch(false);
+        PreVRModeSwitch(false);
         yield return null;
         if (XRGeneralSettings.Instance.Manager.isInitializationComplete)
         {
             XRGeneralSettings.Instance.Manager.StopSubsystems();
             XRGeneralSettings.Instance.Manager.DeinitializeLoader();
             yield return null;
-            AfterXRModeSwitch(false);
+            PostVRModeSwitch(false);
+            yield break;
         }
+        DesktopXRSwitchMod.Logger.Error("Attempted to exit VR without a VR device loaded.");
+        FailedVRModeSwitch(true);
         yield break;
     }
 
+    //one frame after switch attempt
+    public void FailedVRModeSwitch(bool enterVR)
+    {
+        //let tracked objects know a switch failed
+        VRModeSwitchTracker.FailVRModeSwitch(enterVR);
+    }
+
     //one frame before switch attempt
-    public void BeforeXRModeSwitch(bool enterXR)
+    public void PreVRModeSwitch(bool enterVR)
     {
         //let tracked objects know we are attempting to switch
-        VRModeSwitchTracker.PreVRModeSwitch(enterXR);
+        VRModeSwitchTracker.PreVRModeSwitch(enterVR);
     }
 
     //one frame after switch attempt
-    public void AfterXRModeSwitch(bool enterXR)
+    public void PostVRModeSwitch(bool enterVR)
     {
-        //these two must come first
-        TryCatchHell.SetCheckVR(enterXR);
-        TryCatchHell.SetMetaPort(enterXR);
+        //close the menus
+        TryCatchHell.CloseCohtmlMenus();
 
-        //the bulk of funni changes
-        TryCatchHell.RepositionCohtmlHud(enterXR);
-        TryCatchHell.UpdateHudOperations(enterXR);
+        //the base of VR checks
+        TryCatchHell.SetCheckVR(enterVR);
+        TryCatchHell.SetMetaPort(enterVR);
+
+        //game basics for functional gameplay post switch
+        TryCatchHell.RepositionCohtmlHud(enterVR);
+        TryCatchHell.UpdateHudOperations(enterVR);
         TryCatchHell.DisableMirrorCanvas();
-        TryCatchHell.SwitchActiveCameraRigs(enterXR);
+        TryCatchHell.SwitchActiveCameraRigs(enterVR);
         TryCatchHell.ResetCVRInputManager();
         TryCatchHell.UpdateRichPresence();
         TryCatchHell.UpdateGestureReconizerCam();
 
         //let tracked objects know we switched
-        VRModeSwitchTracker.PostVRModeSwitch(enterXR);
+        VRModeSwitchTracker.PostVRModeSwitch(enterVR);
 
         //reload avatar by default, optional for debugging
         if (_reloadLocalAvatar)

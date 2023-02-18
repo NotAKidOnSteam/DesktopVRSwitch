@@ -1,6 +1,5 @@
 ﻿using ABI_RC.Systems.IK;
 using ABI_RC.Systems.IK.SubSystems;
-using ABI_RC.Systems.IK.TrackingModules;
 using HarmonyLib;
 using UnityEngine;
 
@@ -15,14 +14,14 @@ public class IKSystemTracker : MonoBehaviour
     {
         ikSystem = GetComponent<IKSystem>();
         _traverseModules = Traverse.Create(ikSystem).Field("_trackingModules");
-        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch += PostXRModeSwitch;
     }
     void OnDestroy()
     {
-        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch -= PostXRModeSwitch;
     }
 
-    public void PostVRModeSwitch(bool enterXR, Camera activeCamera)
+    public void PostXRModeSwitch(bool enterXR, Camera activeCamera)
     {
         var _trackingModules = _traverseModules.GetValue<List<TrackingModule>>();
         OpenXRTrackingModule openXRTrackingModule = _trackingModules.FirstOrDefault(m => m is OpenXRTrackingModule) as OpenXRTrackingModule;
@@ -39,5 +38,10 @@ public class IKSystemTracker : MonoBehaviour
             OpenXRTrackingModule inputModule = new OpenXRTrackingModule();
             ikSystem.AddTrackingModule(inputModule);
         }
+
+        //make it so you dont instantly end up in FBT from Desktop
+        IKSystem.firstAvatarLoaded = false;
+        //turn of finger tracking just in case user switched controllers
+        ikSystem.FingerSystem.controlActive = false;
     }
 }
