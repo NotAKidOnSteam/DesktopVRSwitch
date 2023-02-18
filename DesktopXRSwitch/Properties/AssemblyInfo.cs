@@ -25,6 +25,6 @@ using System.Reflection;
 namespace NAK.Melons.DesktopXRSwitch.Properties;
 internal static class AssemblyInfoParams
 {
-    public const string Version = "4.2.4";
+    public const string Version = "4.3.4";
     public const string Author = "NotAKidoS";
 }
