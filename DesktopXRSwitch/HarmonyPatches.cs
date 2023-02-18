@@ -90,13 +90,3 @@ internal class IKSystemPatches
         __instance.gameObject.AddComponent<IKSystemTracker>();
     }
 }
-
-internal class VRTrackerManagerPatches
-{
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(VRTrackerManager), "Start")]
-    private static void Postfix_VRTrackerManager_Start(ref VRTrackerManager __instance)
-    {
-        __instance.gameObject.AddComponent<VRTrackerManagerTracker>();
-    }
-}
