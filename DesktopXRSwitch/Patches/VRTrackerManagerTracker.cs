@@ -15,14 +15,14 @@ public class VRTrackerManagerTracker : MonoBehaviour
         vrTrackerManager = GetComponent<VRTrackerManager>();
         _posesTraverse = Traverse.Create(vrTrackerManager).Field("poses");
         _hasCheckedForKnucklesTraverse = Traverse.Create(vrTrackerManager).Field("hasCheckedForKnuckles");
-        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch += PostXRModeSwitch;
     }
     void OnDestroy()
     {
-        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch -= PostXRModeSwitch;
     }
 
-    public void PostVRModeSwitch(bool enterVR, Camera activeCamera)
+    public void PostXRModeSwitch(bool isXR, Camera activeCamera)
     {
         //force the VRTrackerManager to reset anything its stored
         //this makes it get correct Left/Right hand if entering VR with different controllers
