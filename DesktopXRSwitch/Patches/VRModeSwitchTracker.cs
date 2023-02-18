@@ -4,42 +4,42 @@ using UnityEngine.Events;
 
 namespace NAK.Melons.DesktopXRSwitch.Patches;
 
-public class VRModeSwitchTracker
+public class XRModeSwitchTracker
 {
-    public static event UnityAction<bool, Camera> OnPreVRModeSwitch;
-    public static event UnityAction<bool, Camera> OnPostVRModeSwitch;
-    public static event UnityAction<bool, Camera> OnFailVRModeSwitch;
+    public static event UnityAction<bool, Camera> OnPreXRModeSwitch;
+    public static event UnityAction<bool, Camera> OnPostXRModeSwitch;
+    public static event UnityAction<bool, Camera> OnFailXRModeSwitch;
 
-    public static void PreVRModeSwitch(bool enterXR)
+    public static void PreXRModeSwitch(bool isXR)
     {
         TryCatchHell.TryCatchWrapper(() =>
         {
-            DesktopXRSwitchMod.Logger.Msg("Invoking VRModeSwitchTracker.OnPreVRModeSwitch.");
+            DesktopXRSwitchMod.Logger.Msg("Invoking XRModeSwitchTracker.OnPreXRModeSwitch.");
             Camera activeCamera = PlayerSetup.Instance.GetActiveCamera().GetComponent<Camera>();
-            VRModeSwitchTracker.OnPreVRModeSwitch?.Invoke(enterXR, activeCamera);
+            XRModeSwitchTracker.OnPreXRModeSwitch?.Invoke(isXR, activeCamera);
         },
-        "Error while invoking VRModeSwitchTracker.OnPreVRModeSwitch. Did someone do a fucky?");
+        "Error while invoking XRModeSwitchTracker.OnPreXRModeSwitch. Did someone do a fucky?");
     }
 
-    public static void PostVRModeSwitch(bool enterXR)
+    public static void PostXRModeSwitch(bool isXR)
     {
         TryCatchHell.TryCatchWrapper(() =>
         {
-            DesktopXRSwitchMod.Logger.Msg("Invoking VRModeSwitchTracker.OnPostVRModeSwitch.");
+            DesktopXRSwitchMod.Logger.Msg("Invoking XRModeSwitchTracker.OnPostXRModeSwitch.");
             Camera activeCamera = PlayerSetup.Instance.GetActiveCamera().GetComponent<Camera>();
-            VRModeSwitchTracker.OnPostVRModeSwitch?.Invoke(enterXR, activeCamera);
+            XRModeSwitchTracker.OnPostXRModeSwitch?.Invoke(isXR, activeCamera);
         },
-        "Error while invoking VRModeSwitchTracker.OnPostVRModeSwitch. Did someone do a fucky?");
+        "Error while invoking XRModeSwitchTracker.OnPostXRModeSwitch. Did someone do a fucky?");
     }
 
-    public static void FailVRModeSwitch(bool enterVR)
+    public static void FailXRModeSwitch(bool isXR)
     {
         TryCatchHell.TryCatchWrapper(() =>
         {
-            DesktopXRSwitchMod.Logger.Msg("Invoking VRModeSwitchTracker.OnFailVRModeSwitch.");
+            DesktopXRSwitchMod.Logger.Msg("Invoking XRModeSwitchTracker.OnFailXRModeSwitch.");
             Camera activeCamera = PlayerSetup.Instance.GetActiveCamera().GetComponent<Camera>();
-            VRModeSwitchTracker.OnFailVRModeSwitch?.Invoke(enterVR, activeCamera);
+            XRModeSwitchTracker.OnFailXRModeSwitch?.Invoke(isXR, activeCamera);
         },
-        "Error while invoking OnFailVRModeSwitch.OnPreVRModeSwitch. Did someone do a fucky?");
+        "Error while invoking OnFailXRModeSwitch.OnPreXRModeSwitch. Did someone do a fucky?");
     }
 }

@@ -9,7 +9,7 @@
     It is also just in case other mods break or tweak functionality that
     could fuck with switching. Or if they try to detect switching and break...
 
-    The VRModeSwitchTracker system is also built so I can easily & quickly make adjustments to
+    The XRModeSwitchTracker system is also built so I can easily & quickly make adjustments to
     components that may or may not change between builds without breaking the rest of the mod.
 **/
 

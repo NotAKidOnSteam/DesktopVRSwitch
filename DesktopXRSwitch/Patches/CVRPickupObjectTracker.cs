@@ -12,15 +12,15 @@ public class CVRPickupObjectTracker : MonoBehaviour
 
     void Start()
     {
-        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch += PostXRModeSwitch;
     }
 
     void OnDestroy()
     {
-        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch -= PostXRModeSwitch;
     }
 
-    public void PostVRModeSwitch(bool enterXR, Camera activeCamera)
+    public void PostXRModeSwitch(bool isXR, Camera activeCamera)
     {
         if (pickupObject != null)
         {

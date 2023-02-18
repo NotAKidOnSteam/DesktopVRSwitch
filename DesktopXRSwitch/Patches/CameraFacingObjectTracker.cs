@@ -9,15 +9,15 @@ public class CameraFacingObjectTracker : MonoBehaviour
     void Start()
     {
         cameraFacingObject = GetComponent<CameraFacingObject>();
-        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch += PostXRModeSwitch;
     }
 
     void OnDestroy()
     {
-        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch -= PostXRModeSwitch;
     }
 
-    public void PostVRModeSwitch(bool enterXR, Camera activeCamera)
+    public void PostXRModeSwitch(bool isXR, Camera activeCamera)
     {
         cameraFacingObject.m_Camera = activeCamera;
     }

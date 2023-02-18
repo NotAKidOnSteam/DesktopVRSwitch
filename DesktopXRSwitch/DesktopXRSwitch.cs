@@ -44,7 +44,7 @@ public class DesktopXRSwitch : MonoBehaviour
 
     private IEnumerator StartXRSystem()
     {
-        PreVRModeSwitch(true);
+        PreXRModeSwitch(true);
         yield return null;
         yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
         if (!XRGeneralSettings.Instance.Manager.activeLoader == null)
@@ -52,7 +52,7 @@ public class DesktopXRSwitch : MonoBehaviour
             DesktopXRSwitchMod.Logger.Msg("Starting OpenXR...");
             XRGeneralSettings.Instance.Manager.StartSubsystems();
             yield return null;
-            PostVRModeSwitch(true);
+            PostXRModeSwitch(true);
             yield break;
         }
         DesktopXRSwitchMod.Logger.Error("Initializing XR Failed. Is there no XR device connected?");
@@ -62,14 +62,14 @@ public class DesktopXRSwitch : MonoBehaviour
 
     private IEnumerator StopXR()
     {
-        PreVRModeSwitch(false);
+        PreXRModeSwitch(false);
         yield return null;
         if (XRGeneralSettings.Instance.Manager.isInitializationComplete)
         {
             XRGeneralSettings.Instance.Manager.StopSubsystems();
             XRGeneralSettings.Instance.Manager.DeinitializeLoader();
             yield return null;
-            PostVRModeSwitch(false);
+            PostXRModeSwitch(false);
             yield break;
         }
         DesktopXRSwitchMod.Logger.Error("Attempted to exit VR without a VR device loaded.");
@@ -78,40 +78,40 @@ public class DesktopXRSwitch : MonoBehaviour
     }
 
     //one frame after switch attempt
-    public void FailedVRModeSwitch(bool enterVR)
+    public void FailedVRModeSwitch(bool isXR)
     {
         //let tracked objects know a switch failed
-        VRModeSwitchTracker.FailVRModeSwitch(enterVR);
+        XRModeSwitchTracker.FailXRModeSwitch(isXR);
     }
 
     //one frame before switch attempt
-    public void PreVRModeSwitch(bool enterVR)
+    public void PreXRModeSwitch(bool isXR)
     {
         //let tracked objects know we are attempting to switch
-        VRModeSwitchTracker.PreVRModeSwitch(enterVR);
+        XRModeSwitchTracker.PreXRModeSwitch(isXR);
     }
 
     //one frame after switch attempt
-    public void PostVRModeSwitch(bool enterVR)
+    public void PostXRModeSwitch(bool isXR)
     {
         //close the menus
         TryCatchHell.CloseCohtmlMenus();
 
         //the base of VR checks
-        TryCatchHell.SetCheckVR(enterVR);
-        TryCatchHell.SetMetaPort(enterVR);
+        TryCatchHell.SetCheckVR(isXR);
+        TryCatchHell.SetMetaPort(isXR);
 
         //game basics for functional gameplay post switch
-        TryCatchHell.RepositionCohtmlHud(enterVR);
-        TryCatchHell.UpdateHudOperations(enterVR);
+        TryCatchHell.RepositionCohtmlHud(isXR);
+        TryCatchHell.UpdateHudOperations(isXR);
         TryCatchHell.DisableMirrorCanvas();
-        TryCatchHell.SwitchActiveCameraRigs(enterVR);
+        TryCatchHell.SwitchActiveCameraRigs(isXR);
         TryCatchHell.ResetCVRInputManager();
         TryCatchHell.UpdateRichPresence();
         TryCatchHell.UpdateGestureReconizerCam();
 
         //let tracked objects know we switched
-        VRModeSwitchTracker.PostVRModeSwitch(enterVR);
+        XRModeSwitchTracker.PostXRModeSwitch(isXR);
 
         //reload avatar by default, optional for debugging
         if (_reloadLocalAvatar)

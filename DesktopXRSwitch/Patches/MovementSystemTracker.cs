@@ -12,17 +12,17 @@ public class MovementSystemTracker : MonoBehaviour
     void Start()
     {
         movementSystem = GetComponent<MovementSystem>();
-        VRModeSwitchTracker.OnPostVRModeSwitch += PreVRModeSwitch;
-        VRModeSwitchTracker.OnPostVRModeSwitch += PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch += PreXRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch += PostXRModeSwitch;
     }
 
     void OnDestroy()
     {
-        VRModeSwitchTracker.OnPostVRModeSwitch -= PreVRModeSwitch;
-        VRModeSwitchTracker.OnPostVRModeSwitch -= PostVRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch -= PreXRModeSwitch;
+        XRModeSwitchTracker.OnPostXRModeSwitch -= PostXRModeSwitch;
     }
 
-    public void PreVRModeSwitch(bool enterXR, Camera activeCamera)
+    public void PreXRModeSwitch(bool isXR, Camera activeCamera)
     {
         //correct rotationPivot y position, so we dont teleport up/down
         Vector3 position = movementSystem.rotationPivot.transform.position;
@@ -36,11 +36,11 @@ public class MovementSystemTracker : MonoBehaviour
         //so the user can still switch even if avatar is null (if it failed to load for example).
     }
 
-    public void PostVRModeSwitch(bool enterXR, Camera activeCamera)
+    public void PostXRModeSwitch(bool isXR, Camera activeCamera)
     {
         //lazy way of correcting Desktop & VR offset issue (game does the maths)
         movementSystem.TeleportToPosRot(preSwitchWorldPosition, preSwitchWorldRotation, false);
         //recenter desktop collision to player object
-        if (!enterXR) movementSystem.UpdateColliderCenter(movementSystem.transform.position);
+        if (!isXR) movementSystem.UpdateColliderCenter(movementSystem.transform.position);
     }
 }

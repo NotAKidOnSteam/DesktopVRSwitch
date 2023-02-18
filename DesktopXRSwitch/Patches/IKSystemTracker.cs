@@ -21,7 +21,7 @@ public class IKSystemTracker : MonoBehaviour
         XRModeSwitchTracker.OnPostXRModeSwitch -= PostXRModeSwitch;
     }
 
-    public void PostXRModeSwitch(bool enterXR, Camera activeCamera)
+    public void PostXRModeSwitch(bool isXR, Camera activeCamera)
     {
         var _trackingModules = _traverseModules.GetValue<List<TrackingModule>>();
         OpenXRTrackingModule openXRTrackingModule = _trackingModules.FirstOrDefault(m => m is OpenXRTrackingModule) as OpenXRTrackingModule;
