@@ -1,8 +1,8 @@
 {
   "_id": 103,
-  "name": "DesktopXRSwitch",
-  "modversion": "3.0.0",
-  "gameversion": "2022r169p1",
+  "name": "DesktopVRSwitch",
+  "modversion": "4.3.1",
+  "gameversion": "2022r170",
   "loaderversion": "0.5.7",
   "modtype": "Mod",
   "author": "NotAKidoS",
@@ -16,8 +16,8 @@
   "requirements": [
     "None"
   ],
-  "downloadlink": "https://github.com/NotAKidOnSteam/DesktopXRSwitch/releases/download/r3/DesktopXRSwitch.dll",
-  "sourcelink": "https://github.com/NotAKidOnSteam/DesktopXRSwitch/",
-  "changelog": "Initial CVRMG Release",
+  "downloadlink": "https://github.com/NotAKidOnSteam/DesktopVRSwitch/releases/download/v4.3.1/DesktopVRSwitch.dll",
+  "sourcelink": "https://github.com/NotAKidOnSteam/DesktopVRSwitch/",
+  "changelog": "- Backported rewrite from Experimental & patched up to handle OpenVR.\n- Reinitialize SteamVR input on switch incase user restarted SteamVR or changed controllers. Correct fixedDeltaTime when entering Desktop.\n- Many tweaks to ensure everything in-game functions as expected.",
   "embedcolor": "3498db"
 }
