@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Unity​Engine.XR.Management;
 using Valve.VR;
+using cohtml;
 
 namespace NAK.Melons.DesktopXRSwitch;
 
@@ -48,7 +49,7 @@ public class DesktopXRSwitch : MonoBehaviour
         PreXRModeSwitch(true);
         yield return null;
         yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
-        if (!XRGeneralSettings.Instance.Manager.activeLoader == null)
+        if (XRGeneralSettings.Instance.Manager.activeLoader != null)
         {
             DesktopXRSwitchMod.Logger.Msg("Starting OpenXR...");
             XRGeneralSettings.Instance.Manager.StartSubsystems();
