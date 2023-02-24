@@ -3,14 +3,14 @@ using System.Collections;
 using UnityEngine;
 using Unity​Engine.XR.Management;
 using Valve.VR;
-using cohtml;
 
 namespace NAK.Melons.DesktopXRSwitch;
 
 public class DesktopXRSwitch : MonoBehaviour
 {
-    //Settings
+    //Debug Settings
     public bool _reloadLocalAvatar = true;
+    public bool _softVRSwitch = false;
 
     //Internal Stuff
     private bool _switchInProgress = false;
@@ -75,13 +75,14 @@ public class DesktopXRSwitch : MonoBehaviour
             yield break;
         }
         DesktopXRSwitchMod.Logger.Error("Attempted to exit VR without a VR device loaded.");
-        FailedVRModeSwitch(true);
+        FailedVRModeSwitch(false);
         yield break;
     }
 
     //one frame after switch attempt
     public void FailedVRModeSwitch(bool isXR)
     {
+        if (_softVRSwitch) return;
         //let tracked objects know a switch failed
         XRModeSwitchTracker.FailXRModeSwitch(isXR);
     }
@@ -89,6 +90,7 @@ public class DesktopXRSwitch : MonoBehaviour
     //one frame before switch attempt
     public void PreXRModeSwitch(bool isXR)
     {
+        if (_softVRSwitch) return;
         //let tracked objects know we are attempting to switch
         XRModeSwitchTracker.PreXRModeSwitch(isXR);
     }
@@ -96,6 +98,8 @@ public class DesktopXRSwitch : MonoBehaviour
     //one frame after switch attempt
     public void PostXRModeSwitch(bool isXR)
     {
+        if (_softVRSwitch) return;
+
         //close the menus
         TryCatchHell.CloseCohtmlMenus();
 
@@ -119,6 +123,10 @@ public class DesktopXRSwitch : MonoBehaviour
         if (_reloadLocalAvatar)
         {
             TryCatchHell.ReloadLocalAvatar();
+        }
+        else
+        {
+
         }
 
         _switchInProgress = false;

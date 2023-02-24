@@ -16,6 +16,7 @@ internal class PlayerSetupPatches
     [HarmonyPatch(typeof(PlayerSetup), "Start")]
     private static void Postfix_PlayerSetup_Start(ref PlayerSetup __instance)
     {
+        __instance.gameObject.AddComponent<PlayerSetupTracker>();
         if (CheckVR.Instance != null)
         {
             CheckVR.Instance.gameObject.AddComponent<DesktopXRSwitch>();
