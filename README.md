@@ -1,3 +1,6 @@
+# Notice:
+Repo has been archived & contents have been merged to https://github.com/NotAKidOnSteam/NAK_CVR_Mods
+
 # DesktopVRSwitch
 Allows you to switch between Desktop and VR with a keybind.
 
